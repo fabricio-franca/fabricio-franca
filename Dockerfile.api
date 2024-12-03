@@ -1,0 +1,21 @@
+FROM python:3.10
+
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Copiar o arquivo requirements.txt e instalar dependências
+COPY requirements.txt requirements.txt
+RUN python -m pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Copiar o restante dos arquivos da aplicação para o container
+COPY . .
+
+# Corrigir a variável FLASK_APP para apontar para o arquivo correto
+ENV FLASK_APP=app.py 
+
+EXPOSE 5000
+
+# Comando para rodar a aplicação Flask
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000", "--debug"]
